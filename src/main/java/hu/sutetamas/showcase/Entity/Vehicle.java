@@ -1,8 +1,9 @@
 package hu.sutetamas.showcase.Entity;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 
-//@Entity
+@Entity
 @Data
 public class Vehicle {
 

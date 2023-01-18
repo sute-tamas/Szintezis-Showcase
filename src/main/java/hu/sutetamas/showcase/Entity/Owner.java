@@ -1,11 +1,12 @@
 package hu.sutetamas.showcase.Entity;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 
-//@Entity
+@Entity
 @Data
 public class Owner {
 
