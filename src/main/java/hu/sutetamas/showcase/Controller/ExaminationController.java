@@ -18,18 +18,23 @@ public class ExaminationController {
 
     @PostMapping()
     public ResponseEntity<String> saveExamination(@RequestBody Examination exam) {
-        ExaminationService.addExamination(exam);
+        examinationService.addExamination(exam);
         return new ResponseEntity<String>("Examination added", HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public List<Examination> getAllExaminations() {
+        return examinationService.getAllExaminations();
     }
 
     @GetMapping("/{id}")
     public Examination getExamination(@PathVariable long id) {
-        return ExaminationService.getExamination(id);
+        return examinationService.getExamination(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateExamination(@RequestBody Examination exam, @PathVariable long id) {
-        ExaminationService.putExamination(id, exam);
+        examinationService.putExamination(id, exam);
         return new ResponseEntity<String>("Examination put", HttpStatus.OK);
     }
 }

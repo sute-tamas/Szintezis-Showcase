@@ -20,18 +20,23 @@ public class OwnerController {
 
     @PostMapping()
     public ResponseEntity<String> saveOwner(@RequestBody Owner owner) {
-        OwnerService.addOwner(owner);
+        ownerService.addOwner(owner);
         return new ResponseEntity<String>("Owner added", HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public List<Owner> getAllOwners() {
+        return ownerService.getAllOwners();
     }
 
     @GetMapping("/{id}")
     public Owner getOwner(@PathVariable long id) {
-        return OwnerService.getOwner(id);
+        return ownerService.getOwner(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateOwner(@RequestBody Owner owner, @PathVariable long id) {
-        OwnerService.putOwner(id, owner);
+        ownerService.putOwner(id, owner);
         return new ResponseEntity<String>("Owner put", HttpStatus.OK);
     }
 

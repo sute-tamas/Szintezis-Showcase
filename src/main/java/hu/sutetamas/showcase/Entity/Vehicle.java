@@ -1,25 +1,29 @@
 package hu.sutetamas.showcase.Entity;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "vehicles")
 @Data
 public class Vehicle {
 
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private long id;
 
     private String make;
 
     private String model;
 
+    @Column(name = "license_plate")
     private String licensePlate;
 
-    //@JsonManagedReference
-    //@ManyToOne
-    //@JoinColumn(name = "owner_id")
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
     private Owner owner;
 
     // --------------------------------

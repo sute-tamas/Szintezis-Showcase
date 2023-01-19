@@ -1,49 +1,45 @@
 package hu.sutetamas.showcase.Service;
 
+import hu.sutetamas.showcase.Entity.Examination;
 import hu.sutetamas.showcase.Entity.Inspector;
 import hu.sutetamas.showcase.Entity.Owner;
 import hu.sutetamas.showcase.Entity.Workplace;
+import hu.sutetamas.showcase.Repository.WorkplaceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class WorkplaceService {
 
-    private static List<Workplace> workplaces = new ArrayList<>();
+    @Autowired
+    private WorkplaceRepository workplaceRepository;
 
-    static {
-
-        Workplace o = new Workplace();
-        o.setId(1);
-        o.setName("Győr");
-
-        workplaces.add(o);
+    public Workplace getWorkplace(long id) {
+        return workplaceRepository.findById(id).orElseThrow();
     }
 
-    public static Workplace getWorkplace(long id) {
-        Workplace e = new Workplace();
-        for (Workplace temp : workplaces) {
-            if (temp.getId() == id) {
-                e = temp;
-            }
-        }
-        return e;
+    public List<Workplace> getAllWorkplaces() {
+        Iterable<Workplace> workplacesIterator = workplaceRepository.findAll();
+        List<Workplace> workplaces = StreamSupport
+                .stream(workplacesIterator.spliterator(), false)
+                .collect(Collectors.toList());
+        return workplaces;
     }
 
-    public static void addWorkplace(Workplace workplace) {
-        workplaces.add(workplace);
+    public void addWorkplace(Workplace workplace) {
+        workplaceRepository.save(workplace);
     }
 
-    public static void putWorkplace(long id, Workplace workplace) {
-        for (Workplace temp : workplaces) {
-            if (temp.getId() == id) {
-                temp.setName(workplace.getName());
-                return;
-            }
-        }
+    public void putWorkplace(long id, Workplace workplace) {
+        Workplace w = workplaceRepository.findById(id).orElseThrow();
+        w.setName(workplace.getName());
+        workplaceRepository.save(w);
     }
 
     // ---- FELADAT S -----
@@ -54,4 +50,5 @@ public class WorkplaceService {
         w.setName(name);
         return w;
     }
+
 }

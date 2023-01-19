@@ -84,6 +84,20 @@ class ExaminationServiceTest {
     @Test
     public void checkIfVehicleIsAdded() {
 
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
         Vehicle v = vehicleService.addVehicle(1, "Volkswagen", "Golf", "ABC-123");
+
+        Examination eExpected = new Examination();
+        eExpected.setId(1);
+        eExpected.setStartTime(time);
+        eExpected.setVehicle(v);
+
+        Examination eActual = new Examination();
+        eActual.setId(1);
+        eActual.setStartTime(time);
+        eActual.addVehicle(v);
+
+        assertEquals(eExpected, eActual);
     }
 }

@@ -1,5 +1,6 @@
 package hu.sutetamas.showcase.Controller;
 
+import hu.sutetamas.showcase.Entity.Examination;
 import hu.sutetamas.showcase.Entity.Workplace;
 import hu.sutetamas.showcase.Service.WorkplaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,23 @@ public class WorkplaceController {
 
     @PostMapping()
     public ResponseEntity<String> saveWorkplace(@RequestBody Workplace workplace) {
-        WorkplaceService.addWorkplace(workplace);
+        workplaceService.addWorkplace(workplace);
         return new ResponseEntity<String>("Workplace added", HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public List<Workplace> getAllWorkplaces() {
+        return workplaceService.getAllWorkplaces();
     }
 
     @GetMapping("/{id}")
     public Workplace getWorkplace(@PathVariable long id) {
-        return WorkplaceService.getWorkplace(id);
+        return workplaceService.getWorkplace(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateWorkplace(@RequestBody Workplace workplace, @PathVariable long id) {
-        WorkplaceService.putWorkplace(id, workplace);
+        workplaceService.putWorkplace(id, workplace);
         return new ResponseEntity<String>("Workplace put", HttpStatus.OK);
     }
 

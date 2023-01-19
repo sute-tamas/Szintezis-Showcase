@@ -1,22 +1,30 @@
 package hu.sutetamas.showcase.Entity;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "examinations")
 @Data
 public class Examination {
 
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(name = "start_time")
     private Timestamp startTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inspector_id")
     private Inspector inspector;
 
+    @OneToOne
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     //---------------------------------

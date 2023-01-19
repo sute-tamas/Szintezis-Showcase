@@ -1,20 +1,28 @@
 package hu.sutetamas.showcase.Entity;
 
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "workplaces")
 @Data
 public class Workplace {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private long id;
 
     private String name;
 
-    // private Set<Inspector> inspectors;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workplace", orphanRemoval = true)
+    private List<Inspector> inspectors;
 
     //--------------------------------------
 

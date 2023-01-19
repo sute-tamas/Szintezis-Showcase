@@ -1,53 +1,45 @@
 package hu.sutetamas.showcase.Service;
 
 import hu.sutetamas.showcase.Entity.*;
+import hu.sutetamas.showcase.Repository.OwnerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OwnerService {
 
-    private static List<Owner> owners = new ArrayList<>();
+    @Autowired
+    private OwnerRepository ownerRepository;
 
-    static {
-        LocalDate date = LocalDate.of(2023, 1, 18);
-
-        Owner o = new Owner();
-        o.setId(1);
-        o.setFirstName("Kovács");
-        o.setLastName("József");
-        o.setBirthDate(date);
-
-        owners.add(o);
+    public Owner getOwner(long id) {
+        return ownerRepository.findById(id).orElseThrow();
     }
 
-    public static Owner getOwner(long id) {
-        Owner e = new Owner();
-        for (Owner temp : owners) {
-            if (temp.getId() == id) {
-                e = temp;
-            }
-        }
-        return e;
+    public List<Owner> getAllOwners() {
+        Iterable<Owner> ownersIterator = ownerRepository.findAll();
+        List<Owner> owners = StreamSupport
+                .stream(ownersIterator.spliterator(), false)
+                .collect(Collectors.toList());
+        return owners;
     }
 
-    public static void addOwner(Owner owner) {
-        owners.add(owner);
+    public void addOwner(Owner owner) {
+        ownerRepository.save(owner);
     }
 
-    public static void putOwner(long id, Owner owner) {
-        for (Owner temp : owners) {
-            if (temp.getId() == id) {
-                temp.setFirstName(owner.getFirstName());
-                temp.setLastName(owner.getLastName());
-                temp.setBirthDate(owner.getBirthDate());
-                return;
-            }
-        }
+    public void putOwner(long id, Owner owner) {
+        Owner o = ownerRepository.findById(id).orElseThrow();
+        o.setFirstName(owner.getFirstName());
+        o.setLastName(owner.getLastName());
+        o.setBirthDate(owner.getBirthDate());
+        ownerRepository.save(o);
     }
 
     // ---- FELADAT S -----

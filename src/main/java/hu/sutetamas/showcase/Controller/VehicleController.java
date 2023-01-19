@@ -21,18 +21,23 @@ public class VehicleController {
 
     @PostMapping()
     public ResponseEntity<String> saveVehicle(@RequestBody Vehicle vehicle) {
-        VehicleService.addVehicle(vehicle);
+        vehicleService.addVehicle(vehicle);
         return new ResponseEntity<String>("Vehicle added", HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public List<Vehicle> getAllVehicles() {
+        return vehicleService.getAllVehicles();
     }
 
     @GetMapping("/{id}")
     public Vehicle getVehicle(@PathVariable long id) {
-        return VehicleService.getVehicle(id);
+        return vehicleService.getVehicle(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateVehicle(@RequestBody Vehicle vehicle, @PathVariable long id) {
-        VehicleService.putVehicle(id, vehicle);
+        vehicleService.putVehicle(id, vehicle);
         return new ResponseEntity<String>("Vehicle put", HttpStatus.OK);
     }
 

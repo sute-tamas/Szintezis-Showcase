@@ -1,60 +1,46 @@
 package hu.sutetamas.showcase.Service;
 
 import hu.sutetamas.showcase.Entity.*;
+import hu.sutetamas.showcase.Repository.InspectorRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class InspectorService {
 
-    private static List<Inspector> inspectors = new ArrayList<>();
+    @Autowired
+    private InspectorRepository inspectorRepository;
 
-    static {
-        LocalDate date = LocalDate.of(2023, 1, 18);
-
-        Workplace w = new Workplace();
-        w.setId(1);
-        w.setName("Győr");
-
-        Inspector i = new Inspector();
-        i.setId(1);
-        i.setFirstName("Horváth");
-        i.setLastName("István");
-        i.setBirthDate(date);
-        i.setWorkplace(w);
-
-        inspectors.add(i);
+    public void addInspector(Inspector inspector) {
+        inspectorRepository.save(inspector);
     }
 
-    public static void addInspector(Inspector inspector) {
-        inspectors.add(inspector);
+    public Inspector getInspector(long id) {
+        return inspectorRepository.findById(id).orElseThrow();
     }
 
-    public static Inspector getInspector(long id) {
-        Inspector i = new Inspector();
-        for (Inspector temp : inspectors) {
-            if (temp.getId() == id) {
-                i = temp;
-            }
-        }
-        return i;
+    public List<Inspector> getAllInspectors() {
+        Iterable<Inspector> inspectorsIterator = inspectorRepository.findAll();
+        List<Inspector> inspectors = StreamSupport
+                .stream(inspectorsIterator.spliterator(), false)
+                .collect(Collectors.toList());
+        return inspectors;
     }
 
-    public static void putInspector(long id, Inspector inspector) {
-        for (Inspector temp : inspectors) {
-            if (temp.getId() == id) {
-                temp.setFirstName(inspector.getFirstName());
-                temp.setLastName(inspector.getLastName());
-                temp.setBirthDate(inspector.getBirthDate());
-                temp.setWorkplace(inspector.getWorkplace());
-                return;
-            }
-        }
+    public void putInspector(long id, Inspector inspector) {
+        Inspector i = inspectorRepository.findById(id).orElseThrow();
+        i.setFirstName(inspector.getFirstName());
+        i.setLastName(inspector.getLastName());
+        i.setBirthDate(inspector.getBirthDate());
+        inspectorRepository.save(i);
     }
 
     public Inspector addInspector(long id, String firstName, String lastName, LocalDate birthDate){
