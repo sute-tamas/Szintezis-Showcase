@@ -84,6 +84,14 @@ class ExaminationServiceTest {
     @Test
     public void checkIfVehicleIsAdded() {
 
-        Vehicle v = vehicleService.addVehicle(1, "Volkswagen", "Golf", "ABC-123");
+        Vehicle vExpected = new Vehicle();
+        vExpected.setId(1);
+        vExpected.setMake("Volkswagen");
+        vExpected.setModel("Golf");
+        vExpected.setLicensePlate("ABC-123");
+
+        Vehicle vActual = vehicleService.addVehicle(1, "Volkswagen", "Golf", "ABC-123");
+
+        assertEquals(vExpected, vActual);
     }
 }
