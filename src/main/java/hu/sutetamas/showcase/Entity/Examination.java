@@ -24,7 +24,7 @@ public class Examination {
     @JoinColumn(name = "inspector_id")
     private Inspector inspector;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 

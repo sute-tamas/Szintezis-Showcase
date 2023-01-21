@@ -41,4 +41,9 @@ public class VehicleController {
         return new ResponseEntity<String>("Vehicle put", HttpStatus.OK);
     }
 
+    @GetMapping("/valid/{id}")
+    public ResponseEntity<String> checkIfLicenseIsValid(@PathVariable long id) {
+        return vehicleService.checkIfLicenseIsValid(id);
+    }
+
 }

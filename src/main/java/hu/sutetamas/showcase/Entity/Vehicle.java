@@ -1,11 +1,13 @@
 package hu.sutetamas.showcase.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "vehicles")
@@ -30,6 +32,10 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "vehicle", orphanRemoval = true)
+    private List<Examination> examinations;
 
     // --------------------------------
 
