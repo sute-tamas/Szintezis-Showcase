@@ -1,6 +1,7 @@
 package hu.sutetamas.showcase.Entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import hu.sutetamas.showcase.Service.ExaminationService;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class Examination {
     @Column(name = "start_time")
     private Timestamp startTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "inspector_id")
     private Inspector inspector;
 

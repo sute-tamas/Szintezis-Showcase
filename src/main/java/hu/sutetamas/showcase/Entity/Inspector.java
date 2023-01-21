@@ -1,6 +1,7 @@
 package hu.sutetamas.showcase.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,7 +33,8 @@ public class Inspector {
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "inspector", orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "inspector", orphanRemoval = true)
     private List<Examination> examinations;
 
     //----------------------------

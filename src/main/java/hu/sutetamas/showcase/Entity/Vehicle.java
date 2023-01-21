@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "vehicles")
 @Data
@@ -21,6 +23,9 @@ public class Vehicle {
 
     @Column(name = "license_plate")
     private String licensePlate;
+
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

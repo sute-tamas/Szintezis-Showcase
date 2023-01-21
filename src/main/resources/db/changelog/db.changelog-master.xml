@@ -43,6 +43,7 @@
             <column name="make" type="VARCHAR(255)"/>
             <column name="model" type="VARCHAR(255)"/>
             <column name="license_plate" type="VARCHAR(255)"/>
+            <column name="registration_date" type="DATE"/>
             <column name="owner_id" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="vehicles" constraintName="FK_VEH_JOIN_OWN" referencedColumnNames="id" referencedTableName="owners"/>
