@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -39,8 +39,47 @@ public class ExaminationService {
         return examinations;
     }
 
+    public List<Examination> getAllExaminations(LocalDate date) {
+        Iterable<Examination> examinationsIterator = examinationRepository.findAll();
+        List<Examination> examinations = StreamSupport
+                .stream(examinationsIterator.spliterator(), false)
+                .collect(Collectors.toList());
+
+        List<Examination> sameDayExaminations = new ArrayList<>();
+        for(Examination examination : examinations) {
+            if (examination.getStartTime().toLocalDateTime().toLocalDate().isEqual(date)) {
+                sameDayExaminations.add(examination);
+            }
+        }
+        return sameDayExaminations;
+    }
+
     public void addExamination(Examination examination) {
         examinationRepository.save(examination);
+
+        Timer timer = new Timer();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(examination.getStartTime().getTime() + TimeUnit.MINUTES.toMillis(30) + TimeUnit.HOURS.toMillis(1)); // +1 óra mert a localdate késik ennyit
+        Date date = calendar.getTime();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Random ran = new Random();
+                int x = ran.nextInt(100); // random 0-99
+                if (x < 15) {
+                    LocalDate date = examination.getStartTime().toLocalDateTime().toLocalDate();
+                    List<Examination> examinations = getAllExaminations(date);
+                    Timestamp lastExamTime = new Timestamp(0);
+                    for (Examination examination : examinations) {
+                        if (examination.getStartTime().after(lastExamTime)) {
+                            lastExamTime = examination.getStartTime();
+                        }
+                    }
+                    examination.setStartTime(new Timestamp(lastExamTime.getTime() + TimeUnit.MINUTES.toMillis(70)));
+                    examinationRepository.save(examination);
+                }
+            }
+        }, date);
     }
 
     public void putExamination(long id, Examination examination) {

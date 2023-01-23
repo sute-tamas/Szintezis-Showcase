@@ -25,6 +25,12 @@ public class VehicleController {
         return new ResponseEntity<String>("Vehicle added", HttpStatus.OK);
     }
 
+    @PostMapping("/{veId}/addowner/{owId}")
+    public ResponseEntity<String> addOwner(@PathVariable long veId, @PathVariable long owId) {
+        vehicleService.addOwner(veId, owId);
+        return new ResponseEntity<String>("Owner added", HttpStatus.OK);
+    }
+
     @GetMapping()
     public List<Vehicle> getAllVehicles() {
         return vehicleService.getAllVehicles();

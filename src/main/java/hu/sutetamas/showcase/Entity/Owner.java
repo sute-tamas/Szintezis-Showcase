@@ -1,6 +1,7 @@
 package hu.sutetamas.showcase.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Owner {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", orphanRemoval = true)
     private List<Vehicle> vehicles;
 

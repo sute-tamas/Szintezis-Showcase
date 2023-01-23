@@ -24,6 +24,12 @@ public class InspectorController {
         return new ResponseEntity<String>("Inspector added", HttpStatus.OK);
     }
 
+    @PostMapping("/{inId}/addworkplace/{woId}")
+    public ResponseEntity<String> addWorkplace(@PathVariable long inId, @PathVariable long woId) {
+        inspectorService.addWorkplace(inId, woId);
+        return new ResponseEntity<String>("Workplace added", HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public Inspector getInspector(@PathVariable long id) {
         return inspectorService.getInspector(id);

@@ -2,6 +2,7 @@ package hu.sutetamas.showcase.Service;
 
 import hu.sutetamas.showcase.Entity.*;
 import hu.sutetamas.showcase.Repository.InspectorRepository;
+import hu.sutetamas.showcase.Repository.WorkplaceRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class InspectorService {
 
     @Autowired
     private InspectorRepository inspectorRepository;
+    @Autowired
+    private WorkplaceRepository workplaceRepository;
 
     public void addInspector(Inspector inspector) {
         inspectorRepository.save(inspector);
@@ -43,6 +46,13 @@ public class InspectorService {
         inspectorRepository.save(i);
     }
 
+    public void addWorkplace(long inId, long woId) {
+        Inspector i = inspectorRepository.findById(inId).orElseThrow();
+        Workplace w = workplaceRepository.findById(woId).orElseThrow();
+        i.addWorkplace(w);
+        inspectorRepository.save(i);
+    }
+
     public Inspector addInspector(long id, String firstName, String lastName, LocalDate birthDate){
         Inspector i = new Inspector();
         i.setId(id);
@@ -51,5 +61,4 @@ public class InspectorService {
         i.setBirthDate(birthDate);
         return i;
     }
-
 }

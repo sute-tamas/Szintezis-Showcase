@@ -1,6 +1,7 @@
 package hu.sutetamas.showcase.Service;
 
 import hu.sutetamas.showcase.Entity.*;
+import hu.sutetamas.showcase.Repository.OwnerRepository;
 import hu.sutetamas.showcase.Repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -23,6 +24,8 @@ public class VehicleService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     public Vehicle getVehicle(long id) {
         return vehicleRepository.findById(id).orElseThrow();
@@ -45,6 +48,13 @@ public class VehicleService {
         v.setMake(vehicle.getMake());
         v.setModel(vehicle.getModel());
         v.setLicensePlate(vehicle.getLicensePlate());
+        vehicleRepository.save(v);
+    }
+
+    public void addOwner(long veId, long owId) {
+        Vehicle v = vehicleRepository.findById(veId).orElseThrow();
+        Owner o = ownerRepository.findById(owId).orElseThrow();
+        v.addOwner(o);
         vehicleRepository.save(v);
     }
 
@@ -84,5 +94,4 @@ public class VehicleService {
         v.setLicensePlate(licensePlate);
         return v;
     }
-
 }

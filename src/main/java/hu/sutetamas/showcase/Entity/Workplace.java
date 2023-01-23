@@ -2,6 +2,7 @@ package hu.sutetamas.showcase.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,7 +22,8 @@ public class Workplace {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workplace", orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "workplace", orphanRemoval = true)
     private List<Inspector> inspectors;
 
     //--------------------------------------

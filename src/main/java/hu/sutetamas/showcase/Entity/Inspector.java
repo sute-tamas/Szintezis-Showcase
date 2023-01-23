@@ -29,7 +29,7 @@ public class Inspector {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
 
